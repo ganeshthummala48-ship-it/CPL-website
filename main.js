@@ -276,10 +276,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // 7. COUNTDOWN TIMER & LIVE STATUS
+    // Using numeric constructor for maximum cross-browser reliability (Month is 0-indexed: 3 = April)
+    const eventStart = new Date(2026, 3, 2, 10, 0, 0).getTime();
+    const eventEnd = eventStart + (3 * 60 * 60 * 1000); // 3 Hours duration
+
     function updateCountdown() {
-        const eventStart = new Date('April 2, 2026 10:00:00').getTime();
-        const eventEnd = new Date('April 2, 2026 13:00:00').getTime();
-        const now = new Date().getTime();
+        const now = Date.now();
         
         const countdownEl = document.querySelector('#countdown');
 
@@ -301,16 +303,24 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const diff = eventStart - now;
+        const diff = Math.max(0, eventStart - now);
+        
+        if (isNaN(diff) || diff === 0) return;
+
         const days = Math.floor(diff / (1000 * 60 * 60 * 24));
         const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-        document.querySelector('#days').innerText = days.toString().padStart(2, '0');
-        document.querySelector('#hours').innerText = hours.toString().padStart(2, '0');
-        document.querySelector('#minutes').innerText = minutes.toString().padStart(2, '0');
-        document.querySelector('#seconds').innerText = seconds.toString().padStart(2, '0');
+        const daysEl = document.getElementById('days');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
+
+        if (daysEl) daysEl.innerText = days.toString().padStart(2, '0');
+        if (hoursEl) hoursEl.innerText = hours.toString().padStart(2, '0');
+        if (minutesEl) minutesEl.innerText = minutes.toString().padStart(2, '0');
+        if (secondsEl) secondsEl.innerText = seconds.toString().padStart(2, '0');
     }
 
     setInterval(updateCountdown, 1000);
