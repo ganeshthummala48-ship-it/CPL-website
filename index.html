@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPL AZURA-2K26 | World-Class Coding Premier League</title>
+    <meta name="description" content="Compete. Code. Conquer. Join the Coding Premier League (CPL) AZURA-2K26 at CMR College of Engineering & Technology. The ultimate arena for developers.">
+    
+    <!-- SEO / Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://cpl-azura2k26.vercel.app/">
+    <meta property="og:title" content="CPL AZURA-2K26 | Coding Premier League">
+    <meta property="og:description" content="The ultimate competitive coding battleground. Compete with the best and win exciting prizes.">
+    <meta property="og:image" content="https://cpl-azura2k26.vercel.app/og-image.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://cpl-azura2k26.vercel.app/">
+    <meta property="twitter:title" content="CPL AZURA-2K26 | Coding Premier League">
+    <meta property="twitter:description" content="The ultimate competitive coding battleground. Compete with the best and win exciting prizes.">
+    <meta property="twitter:image" content="https://cpl-azura2k26.vercel.app/og-image.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Animation & Smooth Scroll Libs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.162.0/three.min.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#0A0A0F',
+                        primary: '#00F5FF',
+                        secondary: '#8A2BE2',
+                        accent: '#FF2E9F',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-dark text-white overflow-x-hidden selection:bg-primary selection:text-dark">
+
+    <!-- Scroll Progress -->
+    <div id="scroll-progress"></div>
+
+    <!-- Preloader -->
+    <div id="preloader" class="fixed inset-0 z-[100] bg-dark flex flex-col items-center justify-center p-6 text-center">
+        <div class="relative w-48 h-48 mb-8 scale-75 md:scale-100">
+            <div class="absolute inset-0 border-4 border-primary/10 rounded-full"></div>
+            <div id="preloader-ring" class="absolute inset-0 border-t-4 border-primary rounded-full animate-spin"></div>
+            <div class="absolute inset-0 flex items-center justify-center">
+                <span class="text-primary font-heading font-black text-3xl tracking-tighter glow-text">CPL</span>
+            </div>
+        </div>
+        <div class="overflow-hidden h-1 w-64 bg-white/5 rounded-full relative mb-6">
+            <div id="preloader-bar" class="absolute inset-y-0 left-0 bg-primary transition-all duration-300 w-0"></div>
+        </div>
+        <div class="h-10 flex flex-col items-center justify-center">
+            <p id="preloader-text" class="text-[10px] font-mono text-white/40 tracking-[0.3em] uppercase">Initializing System...</p>
+            <p id="boot-log" class="text-[8px] font-mono text-primary/40 mt-1 opacity-0 transition-opacity duration-300"></p>
+        </div>
+    </div>
+
+    <!-- Custom Cursor -->
+    <div id="cursor" class="fixed w-8 h-8 rounded-full border border-primary pointer-events-none z-[999] mix-blend-difference transition-transform duration-100 ease-out hidden md:block"></div>
+    <div id="cursor-dot" class="fixed w-1 h-1 bg-primary rounded-full pointer-events-none z-[999] transition-transform duration-0 ease-out hidden md:block"></div>
+
+    <!-- Noise Overlay -->
+    <div class="fixed inset-0 pointer-events-none z-[50] opacity-[0.03] mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
+
+    <!-- Main Container -->
+    <main id="smooth-wrapper">
+        <div id="smooth-content">
+            
+            <!-- Three.js Canvas Container -->
+            <div id="hero-canvas-container" class="fixed inset-0 z-[-1] opacity-60">
+                <canvas id="hero-canvas"></canvas>
+            </div>
+
+            <!-- Navbar -->
+            <nav id="navbar" class="fixed top-0 left-0 w-full z-[80] transition-all duration-500 py-6">
+                <div class="container mx-auto px-6 flex items-center justify-between">
+                    <a href="#" class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center shadow-lg shadow-primary/20">
+                            <i data-lucide="terminal" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <div class="flex flex-col leading-none">
+                            <span class="font-heading font-extrabold text-xl tracking-tighter">AZURA-2K26</span>
+                            <span class="text-[10px] uppercase tracking-[0.2em] text-white/40 font-bold">Coding Premier League</span>
+                        </div>
+                    </a>
+
+                    <div class="hidden md:flex items-center gap-8 text-sm font-medium">
+                        <a href="#about" class="nav-link hover:text-primary transition-colors">About</a>
+                        <a href="#events" class="nav-link hover:text-primary transition-colors">Events</a>
+                        <a href="#pricing" class="nav-link hover:text-primary transition-colors">Pricing</a>
+                        <a href="#timeline" class="nav-link hover:text-primary transition-colors">Timeline</a>
+                        <a href="#contact" class="nav-link hover:text-primary transition-colors">Contact</a>
+                    </div>
+
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdFcnv9kVx09sppGR7xYpht7bpGpylSYarem8-DBZryN8i3Nw/viewform?usp=dialog" 
+                       target="_blank"
+                       class="px-6 py-2.5 bg-primary text-dark font-bold rounded-full text-sm hover:shadow-[0_0_20px_rgba(0,245,255,0.4)] hover:scale-105 transition-all">
+                        Register Now
+                    </a>
+                </div>
+            </nav>
+
+            <!-- Hero Section -->
+            <section id="hero" class="relative min-h-screen flex items-center pt-24 overflow-hidden">
+                <div class="container mx-auto px-6 relative z-10">
+                    <div class="max-w-4xl">
+                        <div class="mb-6 inline-flex items-center gap-2 px-3 py-1 bg-primary/10 border border-primary/20 rounded-full backdrop-blur-md">
+                            <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+                            <span class="text-[10px] font-bold uppercase tracking-widest text-primary">System Boot Online</span>
+                        </div>
+                        
+                        <h1 class="text-6xl md:text-8xl lg:text-9xl font-heading font-black leading-tight tracking-tighter mb-8 gradient-text">
+                            CODING <br> <span class="outline-text">PREMIER</span> <br> LEAGUE
+                        </h1>
+                        
+                        <p class="text-xl md:text-2xl text-white/50 mb-12 max-w-2xl font-light leading-relaxed">
+                            Compete. Code. Conquer. Step into the arena where algorithms collide and legends are forged.
+                        </p>
+                        
+                        <div class="flex flex-wrap gap-4">
+                            <a href="#pricing" class="px-8 py-4 bg-primary text-dark font-black rounded-lg hover:shadow-[0_0_30px_rgba(0,245,255,0.5)] transition-all flex items-center gap-2 group transform active:scale-95">
+                                Register Now <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
+                            </a>
+                            <a href="#about" class="px-8 py-4 border border-white/10 bg-white/5 backdrop-blur-xl font-bold rounded-lg hover:bg-white/10 transition-all flex items-center gap-2 transform active:scale-95">
+                                Explore Event <i data-lucide="globe" class="w-5 h-5"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Floating Code Card (Hero Aesthetic) -->
+                <div class="absolute right-[-10%] top-[40%] hidden lg:block opacity-40 select-none animate-float">
+                    <div class="glass p-6 rounded-2xl w-[400px] border border-white/20 transform rotate-[-12deg]">
+                        <div class="flex gap-1.5 mb-4">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        </div>
+                        <div class="font-mono text-xs leading-relaxed text-primary/80">
+                            <span class="text-accent">async function</span> <span class="text-secondary">conquerArena</span>() {<br>
+                            &nbsp;&nbsp;<span class="text-accent">const</span> skill = <span class="text-white">localStorage</span>.getItem(<span class="text-primary">'determination'</span>);<br>
+                            &nbsp;&nbsp;<span class="text-accent">if</span> (skill === <span class="text-primary">'UNLIMITED'</span>) {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-accent">return</span> <span class="text-white">LEGENDARY_STATUS</span>;<br>
+                            &nbsp;&nbsp;}<br>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Countdown Section -->
+            <section class="py-24 relative">
+                <div class="container mx-auto px-6">
+                    <div class="glass-dark border border-white/10 rounded-[3rem] p-12 md:p-20 relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[100px] -mr-32 -mt-32"></div>
+                        <div class="absolute bottom-0 left-0 w-64 h-64 bg-secondary/5 rounded-full blur-[100px] -ml-32 -mb-32"></div>
+                        
+                        <div class="text-center mb-16 relative z-10">
+                            <h2 class="text-sm font-bold uppercase tracking-[0.5em] text-primary mb-4">Countdown to Launch</h2>
+                            <p class="text-4xl md:text-5xl font-heading font-black">April 2nd, 2026</p>
+                        </div>
+
+                        <div id="countdown" class="grid grid-cols-2 md:grid-cols-4 gap-6 relative z-10">
+                            <div class="flex flex-col items-center">
+                                <div id="days" class="text-6xl md:text-8xl font-heading font-black text-white glow-text">00</div>
+                                <div class="text-[10px] uppercase tracking-widest text-white/30 font-bold mt-2">Days</div>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div id="hours" class="text-6xl md:text-8xl font-heading font-black text-white glow-text">00</div>
+                                <div class="text-[10px] uppercase tracking-widest text-white/30 font-bold mt-2">Hours</div>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div id="minutes" class="text-6xl md:text-8xl font-heading font-black text-white glow-text">00</div>
+                                <div class="text-[10px] uppercase tracking-widest text-white/30 font-bold mt-2">Minutes</div>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div id="seconds" class="text-6xl md:text-8xl font-heading font-black text-primary glow-text">00</div>
+                                <div class="text-[10px] uppercase tracking-widest text-white/30 font-bold mt-2">Seconds</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About Section -->
+            <section id="about" class="py-32">
+                <div class="container mx-auto px-6">
+                    <div class="grid lg:grid-cols-2 gap-20 items-center">
+                        <div class="relative">
+                            <div class="absolute -top-20 -left-20 w-80 h-80 bg-primary/20 rounded-full blur-[120px] pointer-events-none"></div>
+                            <h2 class="text-sm uppercase tracking-[0.4em] text-primary font-bold mb-6">About CPL</h2>
+                            <h3 class="text-5xl md:text-6xl font-heading font-black mb-8 leading-tight">
+                                THE ULTIMATE <br> CODING BATTLEGROUND
+                            </h3>
+                            <p class="text-lg text-white/60 leading-relaxed mb-10 max-w-xl">
+                                Coding Premier League (CPL) is the flagship competitive programming event of AZURA-2K26. Hosted at CMR College of Engineering & Technology, it brings together the brightest minds to solve complex problems under pressure.
+                            </p>
+                            
+                            <div class="grid grid-cols-3 gap-6">
+                                <div class="flex flex-col items-center p-4 rounded-xl border border-white/5 bg-white/5">
+                                    <i data-lucide="code-2" class="w-8 h-8 text-primary mb-3"></i>
+                                    <span class="text-[10px] uppercase tracking-widest font-bold text-white/40">Coding</span>
+                                </div>
+                                <div class="flex flex-col items-center p-4 rounded-xl border border-white/5 bg-white/5">
+                                    <i data-lucide="zap" class="w-8 h-8 text-secondary mb-3"></i>
+                                    <span class="text-[10px] uppercase tracking-widest font-bold text-white/40">Competition</span>
+                                </div>
+                                <div class="flex flex-col items-center p-4 rounded-xl border border-white/5 bg-white/5">
+                                    <i data-lucide="users" class="w-8 h-8 text-accent mb-3"></i>
+                                    <span class="text-[10px] uppercase tracking-widest font-bold text-white/40">Teamwork</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-6">
+                            <div class="space-y-6 pt-12">
+                                <div class="glass p-8 rounded-3xl border border-white/10">
+                                    <h4 class="text-xl font-bold mb-4">Competitive Coding</h4>
+                                    <p class="text-sm text-white/50 leading-relaxed">Algorithmic challenges designed by industry experts to push your limits.</p>
+                                </div>
+                                <div class="glass p-8 rounded-3xl border border-white/10">
+                                    <h4 class="text-xl font-bold mb-4">Fast-paced Rounds</h4>
+                                    <p class="text-sm text-white/50 leading-relaxed">3 hours of intense mental stimulation and strategic thinking.</p>
+                                </div>
+                            </div>
+                            <div class="space-y-6">
+                                <div class="glass p-8 rounded-3xl border border-white/10 bg-gradient-to-br from-primary/10 to-transparent">
+                                    <h4 class="text-xl font-bold mb-4">Real-time Leaderboard</h4>
+                                    <p class="text-sm text-white/50 leading-relaxed">Watch the rankings shift instantly as problems are solved.</p>
+                                </div>
+                                <div class="glass p-8 rounded-3xl border border-white/10">
+                                    <h4 class="text-xl font-bold mb-4">Team Flexibility</h4>
+                                    <p class="text-sm text-white/50 leading-relaxed">Compete solo or build a dream team of up to three members.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Participation Pricing -->
+            <section id="pricing" class="py-32 relative">
+                <div class="container mx-auto px-6 text-center">
+                    <h2 class="text-sm uppercase tracking-[0.4em] text-secondary font-bold mb-6">Choose Your Entry</h2>
+                    <h3 class="text-5xl md:text-6xl font-heading font-black mb-20">PARTICIPATION SLOTS</h3>
+                    
+                    <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                        <!-- Solo -->
+                        <div class="pricing-card glass p-10 rounded-[2.5rem] border border-white/10 flex flex-col items-center group hover:border-primary/50 transition-all duration-500">
+                            <div class="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-primary group-hover:text-dark transition-colors">
+                                <i data-lucide="user" class="w-8 h-8"></i>
+                            </div>
+                            <h4 class="text-2xl font-bold mb-2">SOLO</h4>
+                            <div class="flex items-baseline gap-1 mb-8">
+                                <span class="text-4xl font-heading font-black text-primary">₹80</span>
+                                <span class="text-white/30 text-xs">/entry</span>
+                            </div>
+                            <ul class="text-white/50 text-sm space-y-4 mb-10 w-full text-left">
+                                <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-primary"></i> 1 Participant</li>
+                                <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-primary"></i> Access to all rounds</li>
+                                <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-primary"></i> Digital Certificate</li>
+                            </ul>
+                            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdFcnv9kVx09sppGR7xYpht7bpGpylSYarem8-DBZryN8i3Nw/viewform?usp=dialog" class="mt-auto w-full py-4 rounded-xl border border-white/10 bg-white/5 font-bold hover:bg-primary hover:text-dark transition-all">Select Slot</a>
+                        </div>
+
+                        <!-- Duo -->
+                        <div class="pricing-card glass p-10 rounded-[2.5rem] border-2 border-primary bg-primary/5 flex flex-col items-center group relative transform md:-translate-y-4">
+                            <div class="absolute -top-5 left-1/2 -translate-x-1/2 px-4 py-1 bg-primary text-dark font-black text-[10px] rounded-full uppercase tracking-widest shadow-lg shadow-primary/20">Popular</div>
+                            <div class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mb-8 text-dark transition-colors">
+                                <i data-lucide="users" class="w-8 h-8"></i>
+                            </div>
+                            <h4 class="text-2xl font-bold mb-2">DUO</h4>
+                            <div class="flex items-baseline gap-1 mb-8">
+                                <span class="text-4xl font-heading font-black text-primary">₹120</span>
+                                <span class="text-white/30 text-xs">/entry</span>
+                            </div>
+                            <ul class="text-white/50 text-sm space-y-4 mb-10 w-full text-left">
+                                <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-primary"></i> 2 Participants</li>
+                                <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-primary"></i> Strategic Teamwork</li>
+                                <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-primary"></i> Digital Certificates</li>
+                            </ul>
+                            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdFcnv9kVx09sppGR7xYpht7bpGpylSYarem8-DBZryN8i3Nw/viewform?usp=dialog" class="mt-auto w-full py-4 rounded-xl bg-primary text-dark font-black hover:shadow-[0_0_20px_rgba(0,245,255,0.4)] transition-all">Select Slot</a>
+                        </div>
+
+                        <!-- Team of 3 -->
+                        <div class="pricing-card glass p-10 rounded-[2.5rem] border border-white/10 flex flex-col items-center group hover:border-accent/50 transition-all duration-500">
+                            <div class="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-accent group-hover:text-dark transition-colors">
+                                <i data-lucide="users-2" class="w-8 h-8"></i>
+                            </div>
+                            <h4 class="text-2xl font-bold mb-2">TRIO</h4>
+                            <div class="flex items-baseline gap-1 mb-8">
+                                <span class="text-4xl font-heading font-black text-accent">₹150</span>
+                                <span class="text-white/30 text-xs">/entry</span>
+                            </div>
+                            <ul class="text-white/50 text-sm space-y-4 mb-10 w-full text-left">
+                                <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-accent"></i> 3 Participants</li>
+                                <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-accent"></i> Maximum Brainpower</li>
+                                <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-accent"></i> Digital Certificates</li>
+                            </ul>
+                            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdFcnv9kVx09sppGR7xYpht7bpGpylSYarem8-DBZryN8i3Nw/viewform?usp=dialog" class="mt-auto w-full py-4 rounded-xl border border-white/10 bg-white/5 font-bold hover:bg-accent hover:text-dark transition-all">Select Slot</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Timeline Section -->
+            <section id="timeline" class="py-32 overflow-hidden">
+                <div class="container mx-auto px-6">
+                    <div class="max-w-4xl mx-auto text-center mb-24">
+                        <h2 class="text-sm uppercase tracking-[0.4em] text-primary font-bold mb-6">Mission Ops</h2>
+                        <h3 class="text-5xl md:text-6xl font-heading font-black">EVENT TIMELINE</h3>
+                    </div>
+
+                    <div class="relative max-w-2xl mx-auto">
+                        <!-- Timeline Line -->
+                        <div class="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-primary via-secondary to-transparent"></div>
+                        
+                        <!-- Step 1 -->
+                        <div class="relative mb-24 timeline-step opacity-0">
+                            <div class="absolute left-1/2 -translate-x-1/2 -top-10 w-12 h-12 bg-dark border-2 border-primary rounded-full flex items-center justify-center z-10">
+                                <span class="text-primary font-black">01</span>
+                            </div>
+                            <div class="pt-8 text-center">
+                                <h4 class="text-3xl font-heading font-bold mb-4">Registration Open</h4>
+                                <p class="text-white/40">Secure your slot in the arena before the server reaches capacity.</p>
+                                <span class="mt-4 inline-block px-4 py-1 bg-white/5 rounded-full text-[10px] font-mono tracking-widest text-primary">LIVE NOW</span>
+                            </div>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div class="relative mb-24 timeline-step opacity-0">
+                            <div class="absolute left-1/2 -translate-x-1/2 -top-10 w-12 h-12 bg-dark border-2 border-primary rounded-full flex items-center justify-center z-10">
+                                <span class="text-primary font-black">02</span>
+                            </div>
+                            <div class="pt-8 text-center">
+                                <h4 class="text-3xl font-heading font-bold mb-4">Event Start</h4>
+                                <p class="text-white/40 text-sm">April 2nd | Reporting Time: 09:30 AM</p>
+                            </div>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div class="relative mb-24 timeline-step opacity-0">
+                            <div class="absolute left-1/2 -translate-x-1/2 -top-10 w-12 h-12 bg-dark border-2 border-primary rounded-full flex items-center justify-center z-10">
+                                <span class="text-primary font-black">03</span>
+                            </div>
+                            <div class="pt-8 text-center">
+                                <h4 class="text-3xl font-heading font-bold mb-4">Coding Round</h4>
+                                <p class="text-white/40 mb-4">3 Hours of intense problem-solving across multiple difficulty levels.</p>
+                                <div class="inline-flex gap-4">
+                                    <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 rounded-full font-mono text-white/30 tracking-tighter">Round 1: Sprint</span>
+                                    <span class="text-[10px] px-3 py-1 bg-white/5 border border-white/10 rounded-full font-mono text-white/30 tracking-tighter">Round 2: Zenith</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 4 -->
+                        <div class="relative timeline-step opacity-0">
+                            <div class="absolute left-1/2 -translate-x-1/2 -top-10 w-12 h-12 bg-dark border-2 border-primary rounded-full flex items-center justify-center z-10">
+                                <span class="text-primary font-black">04</span>
+                            </div>
+                            <div class="pt-8 text-center">
+                                <h4 class="text-3xl font-heading font-bold mb-4">Results & Prizes</h4>
+                                <p class="text-white/40">Announcement of victors and distribution of awards.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Prize Section -->
+            <section class="py-32 relative">
+                <div class="container mx-auto px-6">
+                    <div class="glass-dark border border-white/10 rounded-[4rem] p-12 md:p-24 overflow-hidden relative group">
+                        <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 blur-[150px] -mr-[250px] -mt-[250px] transform group-hover:scale-125 transition-transform duration-1000"></div>
+                        
+                        <div class="grid lg:grid-cols-2 gap-20 items-center relative z-10">
+                            <div>
+                                <h2 class="text-primary font-mono tracking-[0.5em] uppercase text-sm mb-6">Victory Rewards</h2>
+                                <h3 class="text-6xl md:text-7xl font-heading font-black mb-8">LEGENDARY <br> PRIZES</h3>
+                                <p class="text-xl text-white/50 mb-10">Exhilarating cash prizes for the top rankers and certificates for all participants who reach the finish line.</p>
+                                
+                                <div class="flex items-center gap-6">
+                                    <div class="w-16 h-16 bg-primary text-dark rounded-full flex items-center justify-center">
+                                        <i data-lucide="trophy" class="w-8 h-8"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-bold opacity-30 uppercase tracking-widest">Grand Pool</p>
+                                        <p class="text-2xl font-black">Exciting Cash Prizes</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="relative">
+                                <!-- Leaderboard Mock UI -->
+                                <div class="glass p-6 rounded-3xl border border-white/20 shadow-2xl transform rotate-2">
+                                    <div class="flex justify-between items-center mb-6">
+                                        <span class="text-xs font-mono text-white/40 tracking-widest uppercase">Leaderboard_Mockup.exe</span>
+                                        <div class="flex gap-1.5 font-bold">
+                                            <div class="w-2 h-2 rounded-full bg-primary/20"></div>
+                                            <div class="w-2 h-2 rounded-full bg-primary/20"></div>
+                                            <div class="w-2 h-2 rounded-full bg-primary"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="space-y-4">
+                                        <div class="flex items-center justify-between p-4 rounded-xl bg-primary/10 border border-primary/20">
+                                            <div class="flex items-center gap-4">
+                                                <span class="text-lg font-black text-primary">01</span>
+                                                <span class="font-bold">ByteKnights</span>
+                                            </div>
+                                            <span class="font-mono text-xs font-bold px-3 py-1 bg-primary text-dark rounded-full">3250 PTS</span>
+                                        </div>
+                                        <div class="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10 opacity-70">
+                                            <div class="flex items-center gap-4">
+                                                <span class="text-lg font-black text-white/40">02</span>
+                                                <span class="font-bold">CodeWizards</span>
+                                            </div>
+                                            <span class="font-mono text-xs font-bold text-white/40">3100 PTS</span>
+                                        </div>
+                                        <div class="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10 opacity-50">
+                                            <div class="flex items-center gap-4">
+                                                <span class="text-lg font-black text-white/40">03</span>
+                                                <span class="font-bold">LogicLords</span>
+                                            </div>
+                                            <span class="font-mono text-xs font-bold text-white/40">2950 PTS</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mt-6 pt-4 border-t border-white/10 flex justify-center">
+                                        <span class="text-[10px] text-primary font-bold uppercase tracking-widest animate-pulse">Scanning live data...</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- Floating Trophy UI element -->
+                                <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-gradient-to-br from-accent/20 to-transparent blur-[40px] rounded-full"></div>
+                                <div class="absolute -top-10 -right-10 hidden md:block select-none pointer-events-none">
+                                    <i data-lucide="award" class="w-24 h-24 text-primary opacity-20"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact Section -->
+            <section id="contact" class="py-32">
+                <div class="container mx-auto px-6">
+                    <div class="grid lg:grid-cols-2 gap-20">
+                        <div>
+                            <h2 class="text-sm uppercase tracking-[0.4em] text-accent font-bold mb-6">Assistance Required?</h2>
+                            <h3 class="text-5xl font-heading font-black mb-8 leading-tight">THE CORE TEAM IS <br> STANDING BY.</h3>
+                            <p class="text-lg text-white/50 mb-12">Reach out to our coordinators for spot registrations, queries, or technical support.</p>
+                            
+                            <div class="space-y-6">
+                                <div class="p-6 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-6 hover:border-primary/50 transition-colors group">
+                                    <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary transition-colors">
+                                        <i data-lucide="phone" class="w-6 h-6 text-primary group-hover:text-dark"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-white/40 uppercase tracking-widest font-bold">J. Kalyan</p>
+                                        <p class="text-xl font-bold">7815833882</p>
+                                    </div>
+                                </div>
+                                <div class="p-6 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-6 hover:border-primary/50 transition-colors group">
+                                    <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary transition-colors">
+                                        <i data-lucide="phone" class="w-6 h-6 text-primary group-hover:text-dark"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-white/40 uppercase tracking-widest font-bold">J. Akhil</p>
+                                        <p class="text-xl font-bold">7569389838</p>
+                                    </div>
+                                </div>
+                                <div class="p-6 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-6 hover:border-primary/50 transition-colors group">
+                                    <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary transition-colors">
+                                        <i data-lucide="phone" class="w-6 h-6 text-primary group-hover:text-dark"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-white/40 uppercase tracking-widest font-bold">Ch. Raju</p>
+                                        <p class="text-xl font-bold">7816014353</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col justify-center">
+                            <div class="glass-dark border border-white/10 p-12 rounded-[3rem] text-center">
+                                <div class="w-20 h-20 bg-green-500/10 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-[0_0_30px_rgba(34,197,94,0.1)]">
+                                    <i data-lucide="message-square" class="w-10 h-10 text-green-500"></i>
+                                </div>
+                                <h4 class="text-3xl font-heading font-black mb-6">QUICK REGISTER</h4>
+                                <p class="text-white/40 mb-10">Prefer WhatsApp? Our bot and coordinators are available for instant registration confirmation.</p>
+                                <a href="https://wa.me/?text=I want to register for CPL AZURA-2K26" target="_blank" class="block w-full py-5 bg-green-500 text-dark font-black rounded-2xl hover:bg-green-400 hover:shadow-[0_0_30px_rgba(34,197,94,0.3)] transition-all flex items-center justify-center gap-3">
+                                    WhatsApp Quick-Reg <i data-lucide="external-link" class="w-5 h-5"></i>
+                                </a>
+                                
+                                <div class="mt-12 pt-12 border-t border-white/5 text-left">
+                                    <p class="text-xs font-mono text-white/20 mb-4 uppercase tracking-[0.2em]">Venue Coordinates:</p>
+                                    <p class="text-sm font-bold opacity-60">CMR College of Engineering & Technology</p>
+                                    <p class="text-xs opacity-40">Medchal, Hyderabad, Telangana</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="pt-32 pb-12 relative overflow-hidden">
+                <!-- Footer Background Glow -->
+                <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-gradient-to-t from-primary/10 to-transparent blur-[150px] opacity-30"></div>
+                
+                <div class="container mx-auto px-6 relative z-10">
+                    <div class="flex flex-col md:flex-row justify-between items-center gap-12 pb-20 border-b border-white/5">
+                        <div class="max-w-xs text-center md:text-left">
+                            <h5 class="text-2xl font-heading font-black mb-4 tracking-tighter">AZURA-2K26</h5>
+                            <p class="text-white/30 text-sm leading-relaxed">CMR College of Engineering & Technology's flagship technical fest. Elevating engineering excellence.</p>
+                        </div>
+                        
+                        <div class="flex flex-col items-center gap-6">
+                            <p class="text-[10px] uppercase tracking-[0.5em] text-white/20 font-bold">Connect With Us</p>
+                            <div class="flex gap-6">
+                                <a href="#" class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary hover:text-dark transition-all group magnetic-icon">
+                                    <i data-lucide="instagram" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                                </a>
+                                <a href="#" class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary hover:text-dark transition-all group magnetic-icon">
+                                    <i data-lucide="linkedin" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                                </a>
+                                <a href="#" class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary hover:text-dark transition-all group magnetic-icon">
+                                    <i data-lucide="globe" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="pt-12 flex flex-col md:flex-row justify-between items-center gap-8 text-[10px] uppercase tracking-widest text-white/20 font-bold">
+                        <p>© 2026 CMR COLLEGE OF ENGINEERING & TECHNOLOGY. ALL RIGHTS RESERVED.</p>
+                        <p>Built for AZURA-2K26 BY <span class="text-primary italic">TEAM_ZENITH</span></p>
+                        <div class="hover:text-primary transition-colors cursor-pointer">Security Protocol Checked</div>
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+    </main>
+
+    <script src="main.js"></script>
+</body>
+</html>

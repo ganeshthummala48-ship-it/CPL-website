@@ -1,0 +1,236 @@
+/* Global Reset & Base Styles */
+:root {
+    --primary: #00F5FF;
+    --secondary: #8A2BE2;
+    --accent: #FF2E9F;
+    --dark: #0A0A0F;
+}
+
+* {
+    cursor: none !important;
+    box-sizing: border-box;
+}
+
+::selection {
+    background: var(--primary);
+    color: var(--dark);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    transition: background 0.3s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
+}
+
+@media (max-width: 768px) {
+    * {
+        cursor: auto !important;
+    }
+}
+
+html {
+    scroll-behavior: initial;
+}
+
+body {
+    background-color: var(--dark);
+    font-family: 'Inter', sans-serif;
+    color: white;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', sans-serif;
+}
+
+/* Glassmorphism */
+/* From https://css.glass */
+.glass {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 24px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.glass-dark {
+    background: rgba(10, 10, 15, 0.6);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.glass:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(0, 245, 255, 0.2);
+}
+
+/* Typography Effects */
+.gradient-text {
+    background: linear-gradient(135deg, #fff 0%, #00F5FF 50%, #8A2BE2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.outline-text {
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+}
+
+.glow-text {
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+}
+
+.primary-glow {
+    text-shadow: 0 0 20px rgba(0, 245, 255, 0.4);
+}
+
+/* Navbar */
+#navbar.scrolled {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    background: rgba(10, 10, 15, 0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.nav-link {
+    position: relative;
+    padding-bottom: 4px;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--primary);
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* Preloader Animation */
+@keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Custom Cursor */
+#cursor {
+    transition: width 0.3s, height 0.3s, background-color 0.3s, border-color 0.3s;
+}
+
+#cursor.link-hover {
+    width: 100px;
+    height: 100px;
+    background-color: rgba(0, 245, 255, 0.05);
+    border-color: rgba(0, 245, 255, 0.5);
+}
+
+#cursor-dot {
+    transition: transform 0.1s;
+}
+
+/* Card Tilt & Hover Effects */
+.pricing-card {
+    transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.5s;
+}
+
+.pricing-card:hover {
+    transform: translateY(-10px);
+}
+
+/* Countdown Digits Flip (Animated) */
+#countdown div div {
+    display: inline-block;
+    min-width: 1.2ch;
+}
+
+/* Scroll Progress Indicator */
+#scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(to right, var(--primary), var(--secondary), var(--accent));
+    z-index: 2000;
+    width: 0%;
+    box-shadow: 0 0 10px rgba(0, 245, 255, 0.5);
+    transition: width 0.1s ease-out;
+}
+
+/* Sections */
+section {
+    position: relative;
+    z-index: 10;
+}
+
+/* Media Queries for Visual Adjustments */
+@media (max-width: 640px) {
+    .outline-text {
+        -webkit-text-stroke: 0.5px rgba(255, 255, 255, 0.2);
+    }
+}
+
+/* Smooth Scrolling Wrapper */
+#smooth-wrapper {
+    overflow: hidden;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+#smooth-content {
+    overflow: visible;
+    width: 100%;
+}
+
+/* GSAP Reveal Helper Classes */
+.reveal-up {
+    transform: translateY(100px);
+    opacity: 0;
+}
+
+/* Noise Overlay Refinement */
+.noise-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3%3Ffilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Additional Utilities */
+.text-shadow-glow {
+    text-shadow: 0 0 20px rgba(0, 245, 255, 0.3);
+}
+
+.border-glow {
+    box-shadow: 0 0 15px rgba(0, 245, 255, 0.1);
+}
