@@ -47,6 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     ease: "power4.inOut",
                     onComplete: () => {
                         preloader.style.display = 'none';
+                        ScrollTrigger.refresh();
                         initHeroAnimations();
                     }
                 });
