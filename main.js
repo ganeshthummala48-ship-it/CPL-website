@@ -277,8 +277,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 7. COUNTDOWN TIMER & LIVE STATUS
     function updateCountdown() {
-        const eventStart = new Date('April 2, 2026 09:30:00').getTime();
-        const eventEnd = new Date('April 2, 2026 12:30:00').getTime();
+        const eventStart = new Date('April 2, 2026 10:00:00').getTime();
+        const eventEnd = new Date('April 2, 2026 13:00:00').getTime();
         const now = new Date().getTime();
         
         const countdownEl = document.querySelector('#countdown');
