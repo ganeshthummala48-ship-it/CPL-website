@@ -1,84 +1,247 @@
-import './style.css';
+import Lenis from 'lenis';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import * as THREE from 'three';
 
-// Particle Background or Matrix-like effect (Simplified for Hero)
-function initHeroBg() {
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
-  const bg = document.getElementById('hero-bg');
-  if (!bg) return;
-  bg.appendChild(canvas);
+gsap.registerPlugin(ScrollTrigger);
 
-  function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-  resize();
-  window.addEventListener('resize', resize);
+/**
+ * Stage 3D Background - Three.js Implementation
+ */
+function initThreeStage() {
+    const canvas = document.querySelector('#stage-canvas');
+    if (!canvas) return;
 
-  const particles = [];
-  const mouse = { x: 0, y: 0 };
-  window.addEventListener('mousemove', (e) => {
-    mouse.x = e.clientX;
-    mouse.y = e.clientY;
-  });
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
 
-  for (let i = 0; i < 70; i++) {
-    particles.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      size: Math.random() * 2 + 0.5,
-      speedX: (Math.random() - 0.5) * 0.8,
-      speedY: (Math.random() - 0.5) * 0.8,
-      color: Math.random() > 0.5 ? '#00f2ff' : '#9d00ff'
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 30;
+
+    // Mesh Geometry
+    const geometry = new THREE.BufferGeometry();
+    const count = 1500;
+    const positions = new Float32Array(count * 3);
+
+    for (let i = 0; i < count * 3; i++) {
+        positions[i] = (Math.random() - 0.5) * 100;
+    }
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+    const material = new THREE.PointsMaterial({
+        size: 0.1,
+        color: 0x00f3ff,
+        transparent: true,
+        opacity: 0.4
     });
-  }
 
-  function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles.forEach(p => {
-      // Mouse Interaction
-      const mdx = mouse.x - p.x;
-      const mdy = mouse.y - p.y;
-      const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
-      if (mdist < 200) {
-        p.x -= mdx * 0.02;
-        p.y -= mdy * 0.02;
-      }
+    const points = new THREE.Points(geometry, material);
+    scene.add(points);
 
-      p.x += p.speedX;
-      p.y += p.speedY;
-
-      if (p.x < 0) p.x = canvas.width;
-      if (p.x > canvas.width) p.x = 0;
-      if (p.y < 0) p.y = canvas.height;
-      if (p.y > canvas.height) p.y = 0;
-
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-      ctx.fillStyle = p.color;
-      ctx.fill();
-
-      // Lines
-      particles.forEach(p2 => {
-        const dx = p.x - p2.x;
-        const dy = p.y - p2.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 150) {
-          ctx.beginPath();
-          ctx.strokeStyle = `rgba(157, 0, 255, ${0.1 * (1 - dist / 150)})`;
-          ctx.lineWidth = 0.5;
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(p2.x, p2.y);
-          ctx.stroke();
-        }
-      });
+    // Animation variables
+    let mouseX = 0;
+    let mouseY = 0;
+    window.addEventListener('mousemove', (e) => {
+        mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+        mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
     });
-    requestAnimationFrame(animate);
-  }
-  animate();
+
+    function animate() {
+        points.rotation.y += 0.001;
+        points.rotation.x += 0.0005;
+
+        // Mouse reaction
+        gsap.to(points.rotation, {
+            y: mouseX * 0.2,
+            x: -mouseY * 0.2,
+            duration: 2,
+            ease: 'power2.out'
+        });
+
+        renderer.render(scene, camera);
+        requestAnimationFrame(animate);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
 }
 
-// Countdown Timer
+/**
+ * Zenith Preloader & Entry Sequence
+ */
+function initPreloader() {
+    const tl = gsap.timeline();
+
+    tl.to('#preloader-progress', {
+        width: '100%',
+        duration: 1.5,
+        ease: 'power4.inOut'
+    });
+
+    tl.to('#preloader', {
+        yPercent: -100,
+        duration: 1.2,
+        ease: 'power4.inOut'
+    });
+
+    // Hero Reveal Sequence
+    tl.from('#hero-reveal-header', { opacity: 0, y: 30, duration: 1 }, '-=0.4');
+    tl.from('.text-ultra', { 
+        y: 100, 
+        rotateX: 45, 
+        opacity: 0, 
+        stagger: 0.1, 
+        duration: 1.5, 
+        ease: 'power4.out' 
+    }, '-=0.8');
+    tl.from('#hero-reveal-desc', { opacity: 0, x: -30, duration: 1 }, '-=1');
+    tl.from('#hero-reveal-timer', { opacity: 0, x: 30, duration: 1 }, '-=1');
+    tl.from('#navbar', { y: -100, opacity: 0, duration: 1.2, ease: 'power4.out' }, '-=0.8');
+}
+
+/**
+ * Smooth Scrolling - Lenis
+ */
+function initLenis() {
+    const lenis = new Lenis();
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time) => {
+        lenis.raf(time * 1000);
+    });
+    gsap.ticker.lagSmoothing(0);
+}
+
+/**
+ * Zenith Magnetic Interaction
+ */
+function initMagnetic() {
+    const magneticElements = document.querySelectorAll('.magnetic');
+    magneticElements.forEach((el) => {
+        el.addEventListener('mousemove', (e) => {
+            const rect = el.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            
+            gsap.to(el, {
+                x: x * 0.4,
+                y: y * 0.4,
+                duration: 0.6,
+                ease: 'power3.out'
+            });
+        });
+
+        el.addEventListener('mouseleave', () => {
+            gsap.to(el, {
+                x: 0,
+                y: 0,
+                duration: 0.6,
+                ease: 'elastic.out(1, 0.3)'
+            });
+        });
+    });
+}
+
+/**
+ * Custom Cursor Zenith
+ */
+function initCustomCursor() {
+    const cursor = document.querySelector('#custom-cursor');
+    if (!cursor) return;
+
+    window.addEventListener('mousemove', (e) => {
+        gsap.to(cursor, {
+            x: e.clientX,
+            y: e.clientY,
+            duration: 0.1
+        });
+    });
+
+    const links = document.querySelectorAll('a, button, .magnetic');
+    links.forEach(link => {
+        link.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+        link.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+    });
+}
+
+/**
+ * GSAP ScrollTrigger Zenith Reveals
+ */
+function initScrollTriggerAnimations() {
+    // Reveal Fade Up
+    document.querySelectorAll('.stagger-reveal').forEach((el) => {
+       gsap.from(el, {
+           opacity: 0,
+           y: 60,
+           duration: 1.5,
+           ease: 'power4.out',
+           scrollTrigger: {
+               trigger: el,
+               start: 'top 90%'
+           }
+       });
+    });
+
+    // About Section Parallax Reveal
+    gsap.from('#about-reveal-copy', {
+        opacity: 0,
+        x: -50,
+        scrollTrigger: {
+            trigger: '#about-reveal-copy',
+            start: 'top 80%'
+        },
+        duration: 1.5,
+        ease: 'power4.out'
+    });
+
+    gsap.from('#about-reveal-visual', {
+        opacity: 0,
+        x: 50,
+        scale: 0.9,
+        scrollTrigger: {
+            trigger: '#about-reveal-visual',
+            start: 'top 80%'
+        },
+        duration: 1.5,
+        ease: 'power4.out'
+    });
+
+    // 3D Card Tilt Tracking Scroll
+    const cardWraps = document.querySelectorAll('.card-3d-wrap');
+    cardWraps.forEach(wrap => {
+        gsap.to(wrap.querySelector('.card-3d'), {
+            rotateY: 10,
+            rotateX: -10,
+            scrollTrigger: {
+               trigger: wrap,
+               start: 'top bottom',
+               end: 'bottom top',
+               scrub: true
+            }
+        });
+    });
+
+    // Parallax Cards
+    document.querySelectorAll('.parallax-card').forEach(p => {
+        const speed = p.dataset.speed || 0.1;
+        gsap.to(p, {
+            y: 100 * speed,
+            scrollTrigger: {
+               trigger: p,
+               scrub: true
+            }
+        });
+    });
+}
+
+/**
+ * Countdown Timer Zenith
+ */
 function startCountdown() {
     const targetDate = new Date('April 2, 2026 09:00:00').getTime();
 
@@ -89,7 +252,7 @@ function startCountdown() {
         if (distance < 0) {
             clearInterval(timer);
             const cd = document.getElementById('countdown');
-            if (cd) cd.innerHTML = "<h3>EVENT STARTED!</h3>";
+            if (cd) cd.innerHTML = "<h3 class='text-grad font-orbitron'>ARENA_ACTIVE</h3>";
             return;
         }
 
@@ -105,102 +268,15 @@ function startCountdown() {
     }, 1000);
 }
 
-// Scroll Reveal using Intersection Observer
-function initScrollReveal() {
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('revealed');
-                
-                // If it's a stagger container, find children and reveal them
-                if (entry.target.hasAttribute('data-stagger')) {
-                    const children = entry.target.querySelectorAll('.stagger-item');
-                    children.forEach((child, index) => {
-                        setTimeout(() => {
-                            child.classList.add('revealed');
-                        }, index * 100);
-                    });
-                }
-            }
-        });
-    }, observerOptions);
-
-    document.querySelectorAll('[data-aos], [data-stagger]').forEach(el => {
-        observer.observe(el);
-    });
-}
-
-// Glitch effect on title
-function initGlitchEffect() {
-    const title = document.querySelector('.hero-title');
-    if (!title) return;
-
-    // Add glitch class randomly
-    setInterval(() => {
-        if (Math.random() > 0.95) {
-            title.style.transform = `translate(${Math.random() * 4 - 2}px, ${Math.random() * 4 - 2}px)`;
-            title.classList.add('glitch-text');
-            setTimeout(() => {
-                title.classList.remove('glitch-text');
-                title.style.transform = 'translate(0,0)';
-            }, 150);
-        }
-    }, 800);
-}
-
-// 3D Tilt Effect
-function init3DTilt() {
-    const cards = document.querySelectorAll('.tilt-card');
-    cards.forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            
-            const rotateX = (y - centerY) / 10;
-            const rotateY = (centerX - x) / 10;
-            
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-        });
-        
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
-        });
-    });
-}
-
-// Mobile Menu
-function initMobileMenu() {
-    const btn = document.getElementById('mobile-menu-btn');
-    const navLinks = document.querySelector('.nav-links');
-    if (!btn || !navLinks) return;
-    
-    btn.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
-        btn.classList.toggle('active');
-    });
-
-    document.querySelectorAll('.nav-links a').forEach(link => {
-        link.addEventListener('click', () => {
-            navLinks.classList.remove('active');
-            btn.classList.remove('active');
-        });
-    });
-}
-
+/**
+ * Main Initialization
+ */
 document.addEventListener('DOMContentLoaded', () => {
-    initHeroBg();
+    initLenis();
+    initThreeStage();
+    initPreloader();
+    initCustomCursor();
+    initMagnetic();
+    initScrollTriggerAnimations();
     startCountdown();
-    initScrollReveal();
-    initMobileMenu();
-    initGlitchEffect();
-    init3DTilt();
 });

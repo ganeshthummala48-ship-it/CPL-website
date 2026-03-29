@@ -3,236 +3,288 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AZURA CPL – Coding Premier League | CMRCET</title>
-    <meta name="description" content="Coding Premier League (CPL) is a dynamic, fast-paced coding competition part of AZURA-2K26 organized by CSE Dept at CMRCET." />
-    <!-- Google Fonts: Orbitron & Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>AZURA CPL | CMRCET - Premium Coding Arena</title>
+    <meta name="description" content="Engage in the high-definition coding arena at CMRCET. Part of AZURA-2K26." />
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
   </head>
   <body>
-    <!-- Scanline CRT Effect -->
-    <div class="scanline"></div>
-    
-    <div id="app">
-      <!-- Nav -->
-      <nav id="navbar" class="glass">
-        <div class="container">
-          <div class="logo">AZURA <span class="neon-text">CPL</span></div>
+    <!-- Preloader Zenith -->
+    <div id="preloader">
+      <div class="preloader-label">SYSTEM_INITIALIZATION</div>
+      <div class="logo font-orbitron">AZU<span class="text-grad">RA-CPL</span></div>
+      <div class="preloader-bar">
+        <div class="preloader-progress" id="preloader-progress"></div>
+      </div>
+    </div>
+
+    <!-- Custom Cursor -->
+    <div id="custom-cursor"></div>
+
+    <!-- Three.js Stage -->
+    <canvas id="stage-canvas"></canvas>
+
+    <div id="app" class="main-content">
+      <!-- Navbar Zenith -->
+      <nav id="navbar">
+        <div class="container flex justify-between align-center">
+          <div class="logo font-orbitron magnetic">AZURA <span class="text-grad">CPL</span></div>
           <ul class="nav-links">
-            <li><a href="#about">About</a></li>
-            <li><a href="#details">Details</a></li>
-            <li><a href="#fees">Fees</a></li>
-            <li><a href="#rewards">Rewards</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="#about" class="nav-link magnetic">About</a></li>
+            <li><a href="#details" class="nav-link magnetic">Specs</a></li>
+            <li><a href="#participation" class="nav-link magnetic">Entry</a></li>
+            <li><a href="#contact" class="nav-link magnetic">Command</a></li>
           </ul>
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLSdFcnv9kVx09sppGR7xYpht7bpGpylSYarem8-DBZryN8i3Nw/viewform" target="_blank" class="btn btn-primary sm">Register Now</a>
-          <button class="mobile-menu-btn" id="mobile-menu-btn">
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
+          <div class="nav-cta">
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdFcnv9kVx09sppGR7xYpht7bpGpylSYarem8-DBZryN8i3Nw/viewform" target="_blank" class="btn btn-pill-glass btn-primary magnetic">Register Arena</a>
+          </div>
         </div>
       </nav>
 
-      <!-- Hero -->
+      <!-- Hero Section -->
       <section id="hero" class="hero">
-        <div class="hero-bg" id="hero-bg"></div>
-        <div class="container full-window">
-          <div class="hero-content" data-aos="zoom-out">
-            <div class="hero-header-info">
-              <h4 class="hero-college gold-text">CMR College of Engineering & Technology</h4>
-              <h5 class="hero-dept neon-text">Department of Computer Science & Engineering</h5>
-            </div>
-            
-            <div class="main-title-wrap">
-              <h1 class="hero-title glitch-text" data-text="AZURA CPL">AZURA <span class="neon-text outline">CPL</span></h1>
-              <h2 class="hero-subtitle neon-text-purple">Coding Premier League</h2>
+        <div class="container">
+          <div class="hero-labels" id="hero-reveal-header">
+            <span class="section-label block">CMR COLLEGE OF ENGINEERING & TECHNOLOGY</span>
+            <span class="uppercase tracking-widest text-grad font-bold block mt-2">DEPARTMENT OF CSE PRESENT</span>
+          </div>
+
+          <div class="main-display mt-8">
+            <h1 class="text-ultra text-outline" id="hero-title-main">ZENITH</h1>
+            <h1 class="text-ultra mt-[-1rem] text-grad" id="hero-title-sub">CONQUER</h1>
+          </div>
+
+          <div class="hero-bottom-info mt-12 flex justify-between align-end">
+            <div class="hero-desc-wrap" id="hero-reveal-desc">
+              <h3 class="hero-subtitle text-muted leading-relaxed">Coding Premier League (CPL) is a high-octane 3-hour marathon where the brightest minds battle for algorithmic supremacy.</h3>
+              <div class="hero-action-btns mt-12 flex gap-6">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdFcnv9kVx09sppGR7xYpht7bpGpylSYarem8-DBZryN8i3Nw/viewform" target="_blank" class="btn btn-primary lg magnetic">Join Arena</a>
+                <a href="#about" class="btn btn-outline lg sm-hidden magnetic">Specs Panel</a>
+              </div>
             </div>
 
-            <div class="hero-details-row">
-              <p class="hero-desc">Code • Compete • Conquer</p>
-              <h3 class="hero-tagline">Part of <span class="gold-text">AZURA-2K26</span></h3>
-            </div>
-            
-            <!-- Countdown -->
-            <div id="countdown" class="countdown glass">
-              <div class="cd-item"><span id="days">00</span><small>Days</small></div>
-              <div class="cd-item"><span id="hours">00</span><small>Hrs</small></div>
-              <div class="cd-item"><span id="minutes">00</span><small>Min</small></div>
-              <div class="cd-item"><span id="seconds">00</span><small>Sec</small></div>
-            </div>
-
-            <div class="hero-btns">
-              <a href="https://docs.google.com/forms/d/e/1FAIpQLSdFcnv9kVx09sppGR7xYpht7bpGpylSYarem8-DBZryN8i3Nw/viewform" target="_blank" class="btn btn-primary lg glow-btn">Register Now</a>
-              <a href="#about" class="btn btn-outline lg">View Details</a>
+            <!-- Countdown Timer Refined -->
+            <div id="countdown" class="countdown glass p-10 flex gap-10" id="hero-reveal-timer">
+              <div class="cd-item"><span id="days" class="font-orbitron text-3xl">00</span><small class="block text-xs uppercase opacity-50 mt-2">Days</small></div>
+              <div class="cd-item"><span id="hours" class="font-orbitron text-3xl">00</span><small class="block text-xs uppercase opacity-50 mt-2">Hours</small></div>
+              <div class="cd-item"><span id="minutes" class="font-orbitron text-3xl">00</span><small class="block text-xs uppercase opacity-50 mt-2">Minutes</small></div>
+              <div class="cd-item"><span id="seconds" class="font-orbitron text-3xl">00</span><small class="block text-xs uppercase opacity-50 mt-2">Seconds</small></div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- About -->
+      <!-- About Section Parallax -->
       <section id="about" class="section">
-        <div class="container">
-          <div class="section-title-wrap" data-aos="fade-right">
-            <h2 class="section-title">📌 About the <span class="neon-text">Event</span></h2>
-          </div>
-          <div class="about-content glass" data-aos="fade-up">
-            <div class="about-text">
-              <p>Coding Premier League (CPL) is a dynamic, fast-paced coding competition where participants solve challenging problems and compete to climb the leaderboard.</p>
-              <p>Participate solo, as a duo, or in a team and battle your way to the top! Show off your logic, algorithm skills, and speed to conquer the arena.</p>
+        <div class="container relative grid grid-cols-2 gap-20">
+          <div class="about-copy flex flex-col justify-center" id="about-reveal-copy">
+            <span class="section-label">01 // THE Intel</span>
+            <h2 class="section-title">THE NEXT <span class="text-grad">EVOLUTION</span> OF CODING ARENA</h2>
+            <p class="text-muted leading-relaxed max-w-lg mb-8">Solvve challenges, optimize algorithms, and climb the real-time leaderboard in a high-pressure, cinematic environment designed for the elite.</p>
+            <div class="flex flex-col gap-6">
+               <div class="feature flex gap-6 stagger-item">
+                  <div class="icon-wrap bg-glass p-4 rounded-xl"><i data-lucide="zap" class="text-primary"></i></div>
+                  <div>
+                    <h4 class="font-bold mb-2">3-HOUR MARATHON</h4>
+                    <p class="text-muted text-sm">Non-stop intense problem solving with dynamic difficulty.</p>
+                  </div>
+               </div>
+               <div class="feature flex gap-6 stagger-item">
+                  <div class="icon-wrap bg-glass p-4 rounded-xl"><i data-lucide="award" class="text-secondary"></i></div>
+                  <div>
+                    <h4 class="font-bold mb-2">ALGORITHMIC SUPREMACEY</h4>
+                    <p class="text-muted text-sm">Testing logic, speed, and precision in every line of code.</p>
+                  </div>
+               </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      <!-- Details -->
-      <section id="details" class="section bg-alt">
-        <div class="container">
-          <div class="section-title-wrap text-center" data-aos="fade-up">
-            <h2 class="section-title">📅 Event <span class="neon-text-purple">Details</span></h2>
-          </div>
-          <div class="details-grid" data-stagger>
-            <div class="detail-card glass stagger-item tilt-card">
-              <div class="detail-icon floating">📅</div>
-              <h3>Date</h3>
-              <p>2nd April, 2026</p>
+          <div class="about-visual relative" id="about-reveal-visual">
+            <div class="glass p-1 relative overflow-hidden rounded-[2.5rem]">
+               <div class="w-full aspect-square bg-[#050507] flex justify-center align-center">
+                  <i data-lucide="code-2" class="opacity-10 w-40 h-40"></i>
+               </div>
             </div>
-            <div class="detail-card glass stagger-item tilt-card">
-              <div class="detail-icon floating">⏱️</div>
-              <h3>Duration</h3>
-              <p>3 Hours</p>
-            </div>
-            <div class="detail-card glass stagger-item tilt-card">
-              <div class="detail-icon floating">📍</div>
-              <h3>Venue</h3>
-              <p>Dept of CSE, CMRCET</p>
+            <!-- Parallax Floating Cards -->
+            <div class="glass absolute top-1/2 left-[-4rem] p-8 max-w-[200px] parallax-card" data-speed="0.2">
+               <span class="text-grad font-bold block mb-2">60+</span>
+               <p class="text-xs uppercase tracking-widest text-muted">Contenders Expected</p>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Fees -->
-      <section id="fees" class="section">
+      <!-- Specs Panel -->
+      <section id="details" class="section border-t border-glass">
         <div class="container">
-          <div class="section-title-wrap text-center" data-aos="fade-up">
-            <h2 class="section-title">👥 Participation <span class="gold-text">& Fees</span></h2>
+          <div class="header text-center mb-28" id="specs-reveal-header">
+             <span class="section-label">02 // MISSION SPECS</span>
+             <h2 class="section-title">MISSION <span class="text-grad">PARAMETERS</span></h2>
           </div>
-          <div class="fees-grid" data-stagger>
-            <div class="fee-card glass stagger-item tilt-card">
-              <div class="fee-type">Solo</div>
-              <div class="fee-amount">₹80</div>
-              <ul class="fee-features">
-                <li>Individual Warrior</li>
-                <li>Instant Entry</li>
-              </ul>
-              <a href="https://docs.google.com/forms/d/e/1FAIpQLSdFcnv9kVx09sppGR7xYpht7bpGpylSYarem8-DBZryN8i3Nw/viewform" target="_blank" class="btn btn-primary sm">Choose</a>
+          
+          <div class="details-grid grid grid-cols-3 gap-10">
+            <div class="card-3d-wrap stagger-item" data-group="specs">
+               <div class="card-3d glass">
+                  <i data-lucide="calendar" class="text-primary h-12 w-12 mb-8"></i>
+                  <h4 class="text-xl mb-4">Date</h4>
+                  <p class="text-muted">2ND APRIL, 2026</p>
+               </div>
             </div>
-            <div class="fee-card glass featured stagger-item tilt-card">
-              <div class="badge">Popular</div>
-              <div class="fee-type">Duo</div>
-              <div class="fee-amount">₹120</div>
-              <ul class="fee-features">
-                <li>Dynamic Team of 2</li>
-                <li>Collaborative Coding</li>
-              </ul>
-              <a href="https://docs.google.com/forms/d/e/1FAIpQLSdFcnv9kVx09sppGR7xYpht7bpGpylSYarem8-DBZryN8i3Nw/viewform" target="_blank" class="btn btn-primary sm">Choose</a>
+            <div class="card-3d-wrap stagger-item" data-group="specs">
+               <div class="card-3d glass">
+                  <i data-lucide="clock" class="text-secondary h-12 w-12 mb-8"></i>
+                  <h4 class="text-xl mb-4">Duration</h4>
+                  <p class="text-muted">3 HOURS OF PEAK FOCUS</p>
+               </div>
             </div>
-            <div class="fee-card glass stagger-item tilt-card">
-              <div class="fee-type">Team of 3</div>
-              <div class="fee-amount">₹150</div>
-              <ul class="fee-features">
-                <li>Power Squad of 3</li>
-                <li>Max Resource Power</li>
-              </ul>
-              <a href="https://docs.google.com/forms/d/e/1FAIpQLSdFcnv9kVx09sppGR7xYpht7bpGpylSYarem8-DBZryN8i3Nw/viewform" target="_blank" class="btn btn-primary sm">Choose</a>
+            <div class="card-3d-wrap stagger-item" data-group="specs">
+               <div class="card-3d glass">
+                  <i data-lucide="map-pin" class="text-accent h-12 w-12 mb-8"></i>
+                  <h4 class="text-xl mb-4">Venue</h4>
+                  <p class="text-muted">DEPT. OF CSE, CMRCET</p>
+               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Entry Tiers -->
+      <section id="participation" class="section bg-glass border-y border-glass">
+        <div class="container text-center">
+           <div class="header mb-28" id="entry-reveal-header">
+             <span class="section-label">03 // ENTRY ACCESS</span>
+             <h2 class="section-title">PARTICIPATION <span class="text-grad">TIERS</span></h2>
+          </div>
+          
+          <div class="fees-grid grid grid-cols-3 gap-10">
+            <div class="card-3d-wrap stagger-item" data-group="tiers">
+               <div class="card-3d glass">
+                  <h3 class="text-2xl font-bold mb-6">SOLO</h3>
+                  <div class="text-6xl font-black text-grad mb-3">₹80</div>
+                  <p class="text-muted text-xs uppercase tracking-widest mb-10 leading-loose">Solo Contender Entry<br>Personal Console Access<br>Instant Leaderboard Rank</p>
+                  <a href="https://docs.google.com/forms/d/e/1FAIpQLSdFcnv9kVx09sppGR7xYpht7bpGpylSYarem8-DBZryN8i3Nw/viewform" target="_blank" class="btn btn-outline sm magnetic">Request Access</a>
+               </div>
+            </div>
+            <div class="card-3d-wrap stagger-item" data-group="tiers">
+               <div class="card-3d glass active border-primary">
+                  <div class="badge absolute top-6 right-6 px-3 py-1 bg-primary text-black text-[0.6rem] font-bold rounded-full">MOST REQUESTED</div>
+                  <h3 class="text-2xl font-bold mb-6">DUO</h3>
+                  <div class="text-6xl font-black text-grad mb-3">₹120</div>
+                  <p class="text-muted text-xs uppercase tracking-widest mb-10 leading-loose">Double Brainpower Access<br>Shared Dev Environment<br>Collaborative Strategy</p>
+                  <a href="https://docs.google.com/forms/d/e/1FAIpQLSdFcnv9kVx09sppGR7xYpht7bpGpylSYarem8-DBZryN8i3Nw/viewform" target="_blank" class="btn btn-primary sm magnetic">Request Access</a>
+               </div>
+            </div>
+            <div class="card-3d-wrap stagger-item" data-group="tiers">
+               <div class="card-3d glass">
+                  <h3 class="text-2xl font-bold mb-6">TRIO</h3>
+                  <div class="text-6xl font-black text-grad mb-3">₹150</div>
+                  <p class="text-muted text-xs uppercase tracking-widest mb-10 leading-loose">Full Power Squad Access<br>Maximum Resource Power<br>Strategic Dominion</p>
+                  <a href="https://docs.google.com/forms/d/e/1FAIpQLSdFcnv9kVx09sppGR7xYpht7bpGpylSYarem8-DBZryN8i3Nw/viewform" target="_blank" class="btn btn-outline sm magnetic">Request Access</a>
+               </div>
             </div>
           </div>
         </div>
       </section>
 
       <!-- Rewards -->
-      <section id="rewards" class="section bg-alt">
-        <div class="container">
-          <div class="section-title-wrap text-center" data-aos="fade-up">
-            <h2 class="section-title">🏆 <span class="neon-text">Rewards</span> Section</h2>
-          </div>
-          <div class="rewards-content glass" data-aos="zoom-in">
-            <div class="reward-item">
-              <div class="reward-icon gold-glow">💰</div>
-              <h3>Exciting Cash Prize Pool</h3>
-              <p>Battle for the top spot and earn your glory.</p>
-            </div>
-            <div class="reward-line"></div>
-            <div class="reward-item">
-              <div class="reward-icon blue-glow">📜</div>
-              <h3>Participation Certificates</h3>
-              <p>For all brave participants who take the challenge.</p>
-            </div>
-          </div>
+      <section id="rewards" class="section text-center">
+        <div class="container relative">
+           <div id="rewards-reveal-content">
+             <span class="section-label">04 // DOMINANCE</span>
+             <h2 class="section-title">THE GLORY <span class="text-grad">POOL</span></h2>
+             <div class="flex gap-20 justify-center mt-20">
+                <div class="reward-box glass p-12 flex-1">
+                   <h1 class="text-8xl mb-4">💰</h1>
+                   <h3 class="text-3xl font-bold mb-4">CASH RESERVE</h3>
+                   <p class="text-muted leading-relaxed">Massive prize pool for the top 3 dominating contenders.</p>
+                </div>
+                <div class="reward-box glass p-12 flex-1">
+                   <h1 class="text-8xl mb-4">📜</h1>
+                   <h3 class="text-3xl font-bold mb-4">ACCESS RIGHTS</h3>
+                   <p class="text-muted leading-relaxed">Official Participation Certificates for all arena entrants.</p>
+                </div>
+             </div>
+           </div>
         </div>
       </section>
 
-      <!-- Registration -->
-      <section id="registration" class="section registration-cta">
-        <div class="container text-center" data-aos="flip-up">
-          <h2 class="neon-text outline">Ready to Compete?</h2>
-          <p class="warning-text">Limited slots available – Register Now!</p>
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLSdFcnv9kVx09sppGR7xYpht7bpGpylSYarem8-DBZryN8i3Nw/viewform" target="_blank" class="btn btn-primary lg pulse-btn">Register for CPL 2026</a>
-        </div>
-      </section>
-
-      <!-- Contact -->
-      <section id="contact" class="section">
-        <div class="container">
-          <div class="section-title-wrap text-center" data-aos="fade-up">
-            <h2 class="section-title">📞 Contact Us</h2>
+      <!-- Support -->
+      <section id="contact" class="section border-t border-glass">
+        <div class="container text-center">
+          <div id="support-reveal-header" class="mb-28">
+             <span class="section-label">05 // SUPPORT COMMAND</span>
+             <h2 class="section-title">DIRECT <span class="text-grad">OPERATIVES</span></h2>
           </div>
-          <div class="contact-grid">
-            <div class="contact-card glass" data-aos="fade-up">
-              <h3>J. Kalyan</h3>
-              <p class="phone-link">7815833882</p>
-              <a href="tel:7815833882" class="btn btn-outline sm">Call Now</a>
+          
+          <div class="contact-grid grid grid-cols-3 gap-10">
+            <div class="card-3d-wrap stagger-item" data-group="support">
+               <div class="card-3d glass">
+                  <h4 class="text-xs uppercase tracking-widest text-muted mb-2">ADMIN COMMANDER</h4>
+                  <h3 class="text-2xl font-bold mb-4">J. Kalyan</h3>
+                  <p class="text-primary font-orbitron text-xl mb-10">7815833882</p>
+                  <a href="tel:7815833882" class="btn btn-outline sm magnetic">Connect Operative</a>
+               </div>
             </div>
-            <div class="contact-card glass" data-aos="fade-up" data-aos-delay="100">
-              <h3>CH. Raju</h3>
-              <p class="phone-link">7816014353</p>
-              <a href="tel:7816014353" class="btn btn-outline sm">Call Now</a>
+            <div class="card-3d-wrap stagger-item" data-group="support">
+               <div class="card-3d glass">
+                  <h4 class="text-xs uppercase tracking-widest text-muted mb-2">SYSTEM ARCHITECT</h4>
+                  <h3 class="text-2xl font-bold mb-4">CH. Raju</h3>
+                  <p class="text-secondary font-orbitron text-xl mb-10">7816014353</p>
+                  <a href="tel:7816014353" class="btn btn-outline sm magnetic">Connect Operative</a>
+               </div>
             </div>
-            <div class="contact-card glass" data-aos="fade-up" data-aos-delay="200">
-              <h3>J. Akhil</h3>
-              <p class="phone-link">7569389838</p>
-              <a href="tel:7569389838" class="btn btn-outline sm">Call Now</a>
+            <div class="card-3d-wrap stagger-item" data-group="support">
+               <div class="card-3d glass">
+                  <h4 class="text-xs uppercase tracking-widest text-muted mb-2">FIELD OPERATIVE</h4>
+                  <h3 class="text-2xl font-bold mb-4">J. Akhil</h3>
+                  <p class="text-accent font-orbitron text-xl mb-10">7569389838</p>
+                  <a href="tel:7569389838" class="btn btn-outline sm magnetic">Connect Operative</a>
+               </div>
             </div>
           </div>
         </div>
       </section>
 
       <!-- Footer -->
-      <footer class="site-footer">
+      <footer class="section border-t border-glass bg-glass p-0 pt-20">
         <div class="container">
-          <div class="footer-grid">
-            <div class="footer-info">
-              <div class="logo">AZURA <span class="neon-text">CPL</span></div>
-              <p>Department of CSE</p>
-              <p>CMR College of Engineering & Technology</p>
-            </div>
-            <div class="footer-links">
-              <h4>Quick Links</h4>
-              <ul>
-                <li><a href="#hero">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#fees">Participation</a></li>
-                <li><a href="#contact">Contact</a></li>
-              </ul>
-            </div>
+          <div class="flex justify-between mb-28">
+             <div class="brand">
+                <div class="logo font-orbitron text-3xl">AZURA <span class="text-grad">CPL</span></div>
+                <p class="text-muted mt-6 max-w-sm tracking-wide font-light">ELEVATING THE STANDARDS OF COLLEGE CODING COMPETITIONS. PRESENTED BY DEPT. OF CSE, CMRCET.</p>
+             </div>
+             <div class="flex gap-32">
+                <div>
+                   <h5 class="section-label text-xs mb-8">Navigation</h5>
+                   <ul class="flex flex-col gap-4 text-sm font-bold">
+                      <li><a href="#about" class="hover:text-primary">Intel</a></li>
+                      <li><a href="#details" class="hover:text-primary">Specs</a></li>
+                      <li><a href="#participation" class="hover:text-primary">Entry</a></li>
+                   </ul>
+                </div>
+                <div>
+                   <h5 class="section-label text-xs mb-8">GLOBAL COMMAND</h5>
+                   <ul class="flex flex-col gap-4 text-sm font-bold">
+                      <li><a href="tel:7815833882" class="hover:text-primary">Support</a></li>
+                      <li><a href="https://cmrcet.ac.in" target="_blank" class="hover:text-primary">Main Campus</a></li>
+                   </ul>
+                </div>
+             </div>
           </div>
-          <div class="footer-bottom">
-            <p>&copy; 2026 AZURA CPL. Organized by CSE Department, CMRCET.</p>
+          <div class="py-10 border-t border-glass flex justify-between text-[0.6rem] uppercase tracking-[0.4em] opacity-30">
+             <p>&copy; 2026 AZURA CPL. ALL RIGHTS RESERVED.</p>
+             <p>CONQUER THE ARENA</p>
           </div>
         </div>
       </footer>
     </div>
+
+    <!-- GSAP Core -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script type="module" src="/src/main.js"></script>
+    <script>
+       // Initializing Lucide Icons
+       lucide.createIcons();
+    </script>
   </body>
 </html>
