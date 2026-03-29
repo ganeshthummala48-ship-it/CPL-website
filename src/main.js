@@ -16,13 +16,19 @@ function initHeroBg() {
   window.addEventListener('resize', resize);
 
   const particles = [];
-  for (let i = 0; i < 50; i++) {
+  const mouse = { x: 0, y: 0 };
+  window.addEventListener('mousemove', (e) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+  });
+
+  for (let i = 0; i < 70; i++) {
     particles.push({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
-      size: Math.random() * 2 + 1,
-      speedX: (Math.random() - 0.5) * 1,
-      speedY: (Math.random() - 0.5) * 1,
+      size: Math.random() * 2 + 0.5,
+      speedX: (Math.random() - 0.5) * 0.8,
+      speedY: (Math.random() - 0.5) * 0.8,
       color: Math.random() > 0.5 ? '#00f2ff' : '#9d00ff'
     });
   }
@@ -30,6 +36,15 @@ function initHeroBg() {
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     particles.forEach(p => {
+      // Mouse Interaction
+      const mdx = mouse.x - p.x;
+      const mdy = mouse.y - p.y;
+      const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
+      if (mdist < 200) {
+        p.x -= mdx * 0.02;
+        p.y -= mdy * 0.02;
+      }
+
       p.x += p.speedX;
       p.y += p.speedY;
 
@@ -125,13 +140,41 @@ function initGlitchEffect() {
     const title = document.querySelector('.hero-title');
     if (!title) return;
 
-    // Add glitch class randomly or on hover
+    // Add glitch class randomly
     setInterval(() => {
-        if (Math.random() > 0.9) {
+        if (Math.random() > 0.95) {
+            title.style.transform = `translate(${Math.random() * 4 - 2}px, ${Math.random() * 4 - 2}px)`;
             title.classList.add('glitch-text');
-            setTimeout(() => title.classList.remove('glitch-text'), 200);
+            setTimeout(() => {
+                title.classList.remove('glitch-text');
+                title.style.transform = 'translate(0,0)';
+            }, 150);
         }
-    }, 1000);
+    }, 800);
+}
+
+// 3D Tilt Effect
+function init3DTilt() {
+    const cards = document.querySelectorAll('.tilt-card');
+    cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = (y - centerY) / 10;
+            const rotateY = (centerX - x) / 10;
+            
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+        });
+    });
 }
 
 // Mobile Menu
@@ -159,4 +202,5 @@ document.addEventListener('DOMContentLoaded', () => {
     initScrollReveal();
     initMobileMenu();
     initGlitchEffect();
+    init3DTilt();
 });

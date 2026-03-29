@@ -11,6 +11,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
   </head>
   <body>
+    <!-- Scanline CRT Effect -->
+    <div class="scanline"></div>
+    
     <div id="app">
       <!-- Nav -->
       <nav id="navbar" class="glass">
@@ -35,15 +38,22 @@
       <!-- Hero -->
       <section id="hero" class="hero">
         <div class="hero-bg" id="hero-bg"></div>
-        <div class="container">
-          <div class="hero-content" data-aos="fade-up">
-            <h4 class="hero-college gold-text">CMR College of Engineering & Technology</h4>
-            <h5 class="hero-dept neon-text">Department of Computer Science & Engineering</h5>
-            <div class="hero-divider"></div>
-            <h1 class="hero-title">AZURA <span class="neon-text outline">CPL</span></h1>
-            <h2 class="hero-subtitle neon-text-purple">Coding Premier League</h2>
-            <h3 class="hero-tagline">Part of <span class="gold-text">AZURA-2K26</span></h3>
-            <p class="hero-desc">Code • Compete • Conquer</p>
+        <div class="container full-window">
+          <div class="hero-content" data-aos="zoom-out">
+            <div class="hero-header-info">
+              <h4 class="hero-college gold-text">CMR College of Engineering & Technology</h4>
+              <h5 class="hero-dept neon-text">Department of Computer Science & Engineering</h5>
+            </div>
+            
+            <div class="main-title-wrap">
+              <h1 class="hero-title glitch-text" data-text="AZURA CPL">AZURA <span class="neon-text outline">CPL</span></h1>
+              <h2 class="hero-subtitle neon-text-purple">Coding Premier League</h2>
+            </div>
+
+            <div class="hero-details-row">
+              <p class="hero-desc">Code • Compete • Conquer</p>
+              <h3 class="hero-tagline">Part of <span class="gold-text">AZURA-2K26</span></h3>
+            </div>
             
             <!-- Countdown -->
             <div id="countdown" class="countdown glass">
@@ -83,17 +93,17 @@
             <h2 class="section-title">📅 Event <span class="neon-text-purple">Details</span></h2>
           </div>
           <div class="details-grid" data-stagger>
-            <div class="detail-card glass stagger-item">
+            <div class="detail-card glass stagger-item tilt-card">
               <div class="detail-icon floating">📅</div>
               <h3>Date</h3>
               <p>2nd April, 2026</p>
             </div>
-            <div class="detail-card glass stagger-item">
+            <div class="detail-card glass stagger-item tilt-card">
               <div class="detail-icon floating">⏱️</div>
               <h3>Duration</h3>
               <p>3 Hours</p>
             </div>
-            <div class="detail-card glass stagger-item">
+            <div class="detail-card glass stagger-item tilt-card">
               <div class="detail-icon floating">📍</div>
               <h3>Venue</h3>
               <p>Dept of CSE, CMRCET</p>
@@ -109,7 +119,7 @@
             <h2 class="section-title">👥 Participation <span class="gold-text">& Fees</span></h2>
           </div>
           <div class="fees-grid" data-stagger>
-            <div class="fee-card glass stagger-item">
+            <div class="fee-card glass stagger-item tilt-card">
               <div class="fee-type">Solo</div>
               <div class="fee-amount">₹80</div>
               <ul class="fee-features">
@@ -118,7 +128,7 @@
               </ul>
               <a href="https://docs.google.com/forms/d/e/1FAIpQLSdFcnv9kVx09sppGR7xYpht7bpGpylSYarem8-DBZryN8i3Nw/viewform" target="_blank" class="btn btn-primary sm">Choose</a>
             </div>
-            <div class="fee-card glass featured stagger-item">
+            <div class="fee-card glass featured stagger-item tilt-card">
               <div class="badge">Popular</div>
               <div class="fee-type">Duo</div>
               <div class="fee-amount">₹120</div>
@@ -128,7 +138,7 @@
               </ul>
               <a href="https://docs.google.com/forms/d/e/1FAIpQLSdFcnv9kVx09sppGR7xYpht7bpGpylSYarem8-DBZryN8i3Nw/viewform" target="_blank" class="btn btn-primary sm">Choose</a>
             </div>
-            <div class="fee-card glass stagger-item">
+            <div class="fee-card glass stagger-item tilt-card">
               <div class="fee-type">Team of 3</div>
               <div class="fee-amount">₹150</div>
               <ul class="fee-features">
