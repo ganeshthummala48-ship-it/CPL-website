@@ -93,20 +93,45 @@ function startCountdown() {
 // Scroll Reveal using Intersection Observer
 function initScrollReveal() {
     const observerOptions = {
-        threshold: 0.1
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
     };
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('revealed');
+                
+                // If it's a stagger container, find children and reveal them
+                if (entry.target.hasAttribute('data-stagger')) {
+                    const children = entry.target.querySelectorAll('.stagger-item');
+                    children.forEach((child, index) => {
+                        setTimeout(() => {
+                            child.classList.add('revealed');
+                        }, index * 100);
+                    });
+                }
             }
         });
     }, observerOptions);
 
-    document.querySelectorAll('[data-aos]').forEach(el => {
+    document.querySelectorAll('[data-aos], [data-stagger]').forEach(el => {
         observer.observe(el);
     });
+}
+
+// Glitch effect on title
+function initGlitchEffect() {
+    const title = document.querySelector('.hero-title');
+    if (!title) return;
+
+    // Add glitch class randomly or on hover
+    setInterval(() => {
+        if (Math.random() > 0.9) {
+            title.classList.add('glitch-text');
+            setTimeout(() => title.classList.remove('glitch-text'), 200);
+        }
+    }, 1000);
 }
 
 // Mobile Menu
@@ -133,4 +158,5 @@ document.addEventListener('DOMContentLoaded', () => {
     startCountdown();
     initScrollReveal();
     initMobileMenu();
+    initGlitchEffect();
 });

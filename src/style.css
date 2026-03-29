@@ -2,16 +2,17 @@
   --bg-color: #0d0d12;
   --bg-alt: #16161d;
   --primary: #00f2ff;
-  --primary-glow: rgba(0, 242, 255, 0.5);
+  --primary-glow: rgba(0, 242, 255, 0.4);
   --secondary: #9d00ff;
-  --secondary-glow: rgba(157, 0, 255, 0.5);
+  --secondary-glow: rgba(157, 0, 255, 0.4);
   --accent: #ffbd39;
-  --accent-glow: rgba(255, 189, 57, 0.5);
+  --accent-glow: rgba(255, 189, 57, 0.4);
   --text-main: #e0e0e0;
   --text-dim: #a0a0a0;
-  --glass: rgba(255, 255, 255, 0.05);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --glass: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  --nav-height: 80px;
 }
 
 * {
@@ -192,12 +193,13 @@ nav .container {
 
 /* Hero */
 .hero {
-  min-height: 100vh;
+  height: 100dvh;
+  min-height: 700px;
   display: flex;
   align-items: center;
   position: relative;
   overflow: hidden;
-  padding-top: 80px;
+  padding-top: var(--nav-height);
 }
 
 .hero-bg {
@@ -523,8 +525,51 @@ nav .container {
 [data-aos="flip-up"] { transform: rotateX(-90deg); }
 
 [data-aos].revealed {
+  opacity: 1 !important;
+  transform: translate(0) scale(1) rotateX(0) !important;
+}
+
+/* Stagger Logic classes */
+.stagger-item {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.stagger-item.revealed {
   opacity: 1;
-  transform: translate(0) scale(1) rotateX(0);
+  transform: translateY(0);
+}
+
+/* Delay Utils */
+.delay-100 { transition-delay: 100ms !important; }
+.delay-200 { transition-delay: 200ms !important; }
+.delay-300 { transition-delay: 300ms !important; }
+.delay-400 { transition-delay: 400ms !important; }
+
+/* Floating Effect */
+@keyframes floating {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0px); }
+}
+
+.floating {
+  animation: floating 3s ease-in-out infinite;
+}
+
+/* Glitch Effect */
+@keyframes glitch {
+  0% { text-shadow: 2px 0 0 rgba(0, 242, 255, 0.5), -2px 0 0 rgba(157, 0, 255, 0.5); }
+  25% { text-shadow: -2px 0 0 rgba(0, 242, 255, 0.5), 2px 0 0 rgba(157, 0, 255, 0.5); }
+  50% { text-shadow: 2px 0 0 rgba(0, 242, 255, 0.5), -2px 0 0 rgba(157, 0, 255, 0.5); }
+  75% { text-shadow: -2px 0 0 rgba(0, 242, 255, 0.5), 2px 0 0 rgba(157, 0, 255, 0.5); }
+  100% { text-shadow: 2px 0 0 rgba(0, 242, 255, 0.5), -2px 0 0 rgba(157, 0, 255, 0.5); }
+}
+
+.glitch-text {
+  animation: glitch 0.3s infinite alternate;
+  display: inline-block;
 }
 
 /* Mobile Responsive */
